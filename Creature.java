@@ -1,3 +1,4 @@
+import java.util.Random;
 
 /**
  * Abstract class Creature - 
@@ -7,15 +8,17 @@
  * the creature is alive or knocked out. The creature is also responsible for calculating
  * damage delivered based on the creature's strength (1 to str) 
  * 
- * @author Crosbie
- * @version 2020-10 v1.0
+ * @author Robert Tallafer
+ * @version 2021-4-5
  */
-// we will learn what the abstract keyword does in a later chapter
+
 public abstract class Creature
 {
-    private int str;        // The strength of this creature
+    public int strength;        // The strength of this creature
     private int max_hp;     // The maximum hit points the creature can have (used if healing enabled)
-    private int hp;         // the current numberof hit points the creature has
+    public int health;         // the current numberof hit points the creature has
+    public int dmg;        // The number of damage a creature inflicts
+    public Random rndm = new Random();
     
     /**
      * default constructor - this should never actually run.
@@ -23,9 +26,9 @@ public abstract class Creature
      * strength for the subclass
      */
     public Creature (){
-        str=10;
-        hp=10;
-        max_hp = hp;
+        strength=10;
+        health=10;
+        max_hp = health;
     }
     
     /**
@@ -37,7 +40,15 @@ public abstract class Creature
      * @param hp the health of the creature at the start of the simulation, and the current health levels during battle
      */
     public Creature (int str, int hp) {
-       //implement this
+       strength =str; // store starting str
+       health = hp;  // store starting hp
+       max_hp = hp;
+       if(hp>max_hp)
+       {
+         hp=max_hp;  
+           
+        }
+       
     }
     
     
@@ -46,8 +57,9 @@ public abstract class Creature
      * @return a value between 1 and str to be used to cause damage to another creature
      */
     public int attack(){
-        // TODO: implement a damage method
-        return 0;
+
+        dmg= rndm.nextInt(strength)+1;
+        return dmg;
     }
     
     
@@ -56,8 +68,13 @@ public abstract class Creature
      * @return true when current hit point level is greater than zero
      */
     public boolean isAlive() {
-        // TODO: implement a method to report if the creature yet lives
-        return false; //change this
+        boolean alive=false;
+        if(health >0)
+        {
+         alive= true;   
+        }
+        
+        return alive; 
     }
     
     /**
@@ -65,8 +82,13 @@ public abstract class Creature
      * @return true when current hit point level is less than or equal to zero
      */
     public boolean isKnockedOut() {
-        //TODO: implement a method to report if the creature has been killed
-        return false; //change this
+        boolean KOed=false;
+        if(health <=0)
+        {
+         KOed= true;   
+        }
+        
+        return KOed;
     }
     
     
@@ -76,7 +98,15 @@ public abstract class Creature
      * @param damage value to remove from hit point count
      */
     public void takeDamage(int damage) {
-        // TODO: implement this
+        health=health-damage;
     }
     
+    /**
+     * getHealth return your current hit points 
+     * 
+     */
+    public int getHealth() {
+        
+        return health;
+    }
 }
